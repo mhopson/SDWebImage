@@ -151,7 +151,7 @@ static SDImageCache *instance;
 
     if (image)
     {
-        [memCache setObject:image forKey:key];
+//        [memCache setObject:image forKey:key];
 
         if ([delegate respondsToSelector:@selector(imageCache:didFindImage:forKey:userInfo:)])
         {
@@ -197,7 +197,7 @@ static SDImageCache *instance;
         return;
     }
 
-    [memCache setObject:image forKey:key];
+//    [memCache setObject:image forKey:key];
 
     if (toDisk)
     {
@@ -248,7 +248,7 @@ static SDImageCache *instance;
         image = SDScaledImageForPath(key, [NSData dataWithContentsOfFile:[self cachePathForKey:key]]);
         if (image)
         {
-            [memCache setObject:image forKey:key];
+//            [memCache setObject:image forKey:key];
         }
     }
 
@@ -315,6 +315,16 @@ static SDImageCache *instance;
         [[NSFileManager defaultManager] removeItemAtPath:[self cachePathForKey:key] error:nil];
     }
 }
+
+//- (void)removeImagesForKeys:(NSArray*)keys fromDisk:(BOOL)fromDisk
+//{
+//    NSAssert(fromDisk == NO, @"Can't remove from disk yet, just memory");
+//    
+//    if (keys == nil)
+//        return;
+//    
+//    [memCache removeObjectsForKeys:keys];
+//}
 
 - (void)clearMemory
 {

@@ -102,6 +102,8 @@
  */
 - (void)removeImageForKey:(NSString *)key fromDisk:(BOOL)fromDisk;
 
+//- (void)removeImagesForKeys:(NSArray*)keys fromDisk:(BOOL)fromDisk;
+
 /**
  * Clear all memory cached images
  */
