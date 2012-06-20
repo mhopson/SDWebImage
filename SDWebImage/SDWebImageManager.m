@@ -345,6 +345,21 @@ static SDWebImageManager *instance;
     SDWIRetain(downloader);
     SDWebImageOptions options = [[downloader.userInfo objectForKey:@"options"] intValue];
 
+    if (image)
+    {
+        // Store the image in the cache
+        [[SDImageCache sharedImageCache] storeImage:image
+                                          imageData:downloader.imageData
+                                             forKey:[self cacheKeyForURL:downloader.url]
+                                             toDisk:!(options & SDWebImageCacheMemoryOnly)];
+    }
+    else if (!(options & SDWebImageRetryFailed))
+    {
+        // The image can't be downloaded from this URL, mark the URL as failed so we won't try and fail again and again
+        // (do this only if SDWebImageRetryFailed isn't activated)
+        [failedURLs addObject:downloader.url];
+    }
+    
     // Notify all the downloadDelegates with this downloader
     for (NSInteger idx = (NSInteger)[downloaders count] - 1; idx >= 0; idx--)
     {
@@ -417,20 +432,7 @@ static SDWebImageManager *instance;
         }
     }
 
-    if (image)
-    {
-        // Store the image in the cache
-        [[SDImageCache sharedImageCache] storeImage:image
-                                          imageData:downloader.imageData
-                                             forKey:[self cacheKeyForURL:downloader.url]
-                                             toDisk:!(options & SDWebImageCacheMemoryOnly)];
-    }
-    else if (!(options & SDWebImageRetryFailed))
-    {
-        // The image can't be downloaded from this URL, mark the URL as failed so we won't try and fail again and again
-        // (do this only if SDWebImageRetryFailed isn't activated)
-        [failedURLs addObject:downloader.url];
-    }
+
 
 
     // Release the downloader
